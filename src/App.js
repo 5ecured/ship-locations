@@ -75,6 +75,28 @@ function App() {
           ))
         }
       </MapContainer>
+
+      <button
+        onClick={() => window.location.reload()}
+        style={{
+          position: "absolute",
+          bottom: "20px",
+          left: "50%",
+          transform: "translateX(-50%)",
+          padding: "12px 20px",
+          backgroundColor: "#2563eb",
+          color: "white",
+          border: "none",
+          borderRadius: "9999px",
+          fontSize: "16px",
+          fontWeight: "bold",
+          cursor: "pointer",
+          boxShadow: "0px 4px 8px rgba(0,0,0,0.2)",
+          zIndex: 1000
+        }}
+      >
+        Refresh
+      </button>
     </div>
   );
 }
