@@ -7,14 +7,19 @@ const API_URL = process.env.REACT_APP_API
 
 function App() {
   const [ships, setShips] = useState([]);
+  const [isLoading, setIsLoading] = useState(true)
+  console.log(ships)
 
   const fetchShips = async () => {
     try {
+      setIsLoading(true)
       const res = await fetch(API_URL);
       const data = await res.json();
       setShips(data.data);
     } catch (err) {
       console.error("Error fetching ship data:", err);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -27,10 +32,20 @@ function App() {
     return () => clearInterval(interval);
   }, []);
 
+  if (isLoading) {
+    return (
+      <div style={{ height: "100vh", width: "100%" }}>
+        <div style={{ textAlign: "center", paddingTop: "50px", fontSize: "24px" }}>
+          Loading...
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{ height: "100vh", width: "100%" }}>
       <MapContainer
-        center={[0.7893, 113.9213]} // on refresh, it shows this instead of world map
+        center={[0.7893, 113.9213]} // on refresh, it shows this instead of the whole world map
         zoom={5}
         style={{ height: "100%", width: "100%" }}
       >
@@ -42,10 +57,10 @@ function App() {
 
         {/* Ship markers */}
         {ships && ships?.length > 0 &&
-          ships?.map((ship, i) => (
+          ships?.map(ship => (
             ship.Lat != null && ship.Lon != null && (
               <Marker
-                key={i}
+                key={ship.GPSID}
                 position={[ship.Lat, ship.Lon]}
                 icon={ship.Status.toLowerCase() === "moving" ? movingIcon : idleIcon}
               >
@@ -59,7 +74,6 @@ function App() {
             )
           ))
         }
-
       </MapContainer>
     </div>
   );
