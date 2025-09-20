@@ -15,7 +15,7 @@ function App() {
       setIsLoading(true)
       const res = await fetch(API_URL);
       const data = await res.json();
-      setShips(data.data);
+      setShips([...data.data]);
     } catch (err) {
       console.error("Error fetching ship data:", err);
     } finally {
